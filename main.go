@@ -57,11 +57,7 @@ func (t *TorreControl) aterrizar(avion Avion) {
 
 		// Bloquea hasta que pueda acceder a la cola de espera y luego intenta aterrizar
 		t.esperaAterrizaje <- struct{}{}
-		t.mutex.Lock()
-		fmt.Printf(msgEnEsperaAterrizaje, t.tiempoTranscurrido(), avion.id)
-		t.mutex.Unlock()
-
-		// Ahora que ha entrado en espera, intenta acceder a una pista
+		// Intenta acceder a una pista
 		select {
 		case t.pistas <- struct{}{}: // Si hay una pista disponible, la ocupa inmediatamente
 			t.mutex.Lock()
